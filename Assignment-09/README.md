@@ -1,4 +1,4 @@
-# Assgn09 Gaussian Elimination
+# Assgn09: Gaussian Elimination
 
 Convert the pseudocode for Elimination, Pivoting and Substitution into C-code
 Read the system of equations from a file (the file will contain N rows and N+1 columns)
