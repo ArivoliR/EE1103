@@ -1,0 +1,9 @@
+ping www.notion.com -i 0.002 -c 5000 > ping.txt
+
+awk '{print $8}' ping.txt > tmpping.txt
+
+awk -F = '{print $2}' tmpping.txt > finalping.txt
+
+awk 'BEGIN{x=0;y=0}{x+=$1;y+=$1*$1}END{print x/NR, sqrt(y/NR - (x/NR)**2)}' finalping.txt
+
+
