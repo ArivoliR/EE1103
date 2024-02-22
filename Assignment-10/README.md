@@ -1,4 +1,4 @@
-# Assgn10 Gaussian and Lagrangian Interpolation
+# Assgn10: Gaussian and Lagrangian Interpolation
 
 Convert the pseudo code to c-code for both Gaussian and Lagrangian interpolation
 Prob 18.26: f(x) = 1/(1+25 x^2)
