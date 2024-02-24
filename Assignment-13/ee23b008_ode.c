@@ -1,206 +1,235 @@
-<!DOCTYPE html>
+/*
+Name: Arivoli Ramamoothy
+Roll Number: ee23b008
+Description:
+This code solves the differential equations of the theta and phi derived from the landau-lifshiftz-gilbert equation using numerical methods like euler method, huen method and rk45 method
+and calculates the R^2 values for euler and heun using rk45 as standard.  
+Input: theta_start theta_stop alpha delta_t
+Output: alpha delta_t R^2_Euler R^2_Huen
+*/
 
-<html  dir="ltr" lang="en" xml:lang="en">
-<head>
-    <title>IIT Courses: Log in to the site</title>
-    <link rel="shortcut icon" href="https://coursesnew.iitm.ac.in/theme/image.php/classic/theme/1707983344/favicon" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="moodle, IIT Courses: Log in to the site" />
-<link rel="stylesheet" type="text/css" href="https://coursesnew.iitm.ac.in/theme/yui_combo.php?rollup/3.17.2/yui-moodlesimple-min.css" /><script id="firstthemesheet" type="text/css">/** Required in order to fix style inclusion problems in IE with YUI **/</script><link rel="stylesheet" type="text/css" href="https://coursesnew.iitm.ac.in/theme/styles.php/classic/1707983344_1678791050/all" />
-<script>
-//<![CDATA[
-var M = {}; M.yui = {};
-M.pageloadstarttime = new Date();
-M.cfg = {"wwwroot":"https:\/\/coursesnew.iitm.ac.in","homeurl":{},"sesskey":"B0BShkX4dN","sessiontimeout":"28800","sessiontimeoutwarning":"3600","themerev":"1707983344","slasharguments":1,"theme":"classic","iconsystemmodule":"core\/icon_system_fontawesome","jsrev":"1707983344","admin":"admin","svgicons":true,"usertimezone":"Asia\/Kolkata","courseId":1,"courseContextId":2,"contextid":1,"contextInstanceId":0,"langrev":1707983344,"templaterev":"1707983344"};var yui1ConfigFn = function(me) {if(/-skin|reset|fonts|grids|base/.test(me.name)){me.type='css';me.path=me.path.replace(/\.js/,'.css');me.path=me.path.replace(/\/yui2-skin/,'/assets/skins/sam/yui2-skin')}};
-var yui2ConfigFn = function(me) {var parts=me.name.replace(/^moodle-/,'').split('-'),component=parts.shift(),module=parts[0],min='-min';if(/-(skin|core)$/.test(me.name)){parts.pop();me.type='css';min=''}
-if(module){var filename=parts.join('-');me.path=component+'/'+module+'/'+filename+min+'.'+me.type}else{me.path=component+'/'+component+'.'+me.type}};
-YUI_config = {"debug":false,"base":"https:\/\/coursesnew.iitm.ac.in\/lib\/yuilib\/3.17.2\/","comboBase":"https:\/\/coursesnew.iitm.ac.in\/theme\/yui_combo.php?","combine":true,"filter":null,"insertBefore":"firstthemesheet","groups":{"yui2":{"base":"https:\/\/coursesnew.iitm.ac.in\/lib\/yuilib\/2in3\/2.9.0\/build\/","comboBase":"https:\/\/coursesnew.iitm.ac.in\/theme\/yui_combo.php?","combine":true,"ext":false,"root":"2in3\/2.9.0\/build\/","patterns":{"yui2-":{"group":"yui2","configFn":yui1ConfigFn}}},"moodle":{"name":"moodle","base":"https:\/\/coursesnew.iitm.ac.in\/theme\/yui_combo.php?m\/1707983344\/","combine":true,"comboBase":"https:\/\/coursesnew.iitm.ac.in\/theme\/yui_combo.php?","ext":false,"root":"m\/1707983344\/","patterns":{"moodle-":{"group":"moodle","configFn":yui2ConfigFn}},"filter":null,"modules":{"moodle-core-handlebars":{"condition":{"trigger":"handlebars","when":"after"}},"moodle-core-languninstallconfirm":{"requires":["base","node","moodle-core-notification-confirm","moodle-core-notification-alert"]},"moodle-core-actionmenu":{"requires":["base","event","node-event-simulate"]},"moodle-core-notification":{"requires":["moodle-core-notification-dialogue","moodle-core-notification-alert","moodle-core-notification-confirm","moodle-core-notification-exception","moodle-core-notification-ajaxexception"]},"moodle-core-notification-dialogue":{"requires":["base","node","panel","escape","event-key","dd-plugin","moodle-core-widget-focusafterclose","moodle-core-lockscroll"]},"moodle-core-notification-alert":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-confirm":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-exception":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-ajaxexception":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-dragdrop":{"requires":["base","node","io","dom","dd","event-key","event-focus","moodle-core-notification"]},"moodle-core-tooltip":{"requires":["base","node","io-base","moodle-core-notification-dialogue","json-parse","widget-position","widget-position-align","event-outside","cache-base"]},"moodle-core-blocks":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification"]},"moodle-core-popuphelp":{"requires":["moodle-core-tooltip"]},"moodle-core-maintenancemodetimer":{"requires":["base","node"]},"moodle-core-formchangechecker":{"requires":["base","event-focus","moodle-core-event"]},"moodle-core-event":{"requires":["event-custom"]},"moodle-core-chooserdialogue":{"requires":["base","panel","moodle-core-notification"]},"moodle-core-lockscroll":{"requires":["plugin","base-build"]},"moodle-core_availability-form":{"requires":["base","node","event","event-delegate","panel","moodle-core-notification-dialogue","json"]},"moodle-backup-backupselectall":{"requires":["node","event","node-event-simulate","anim"]},"moodle-backup-confirmcancel":{"requires":["node","node-event-simulate","moodle-core-notification-confirm"]},"moodle-course-dragdrop":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification","moodle-course-coursebase","moodle-course-util"]},"moodle-course-util":{"requires":["node"],"use":["moodle-course-util-base"],"submodules":{"moodle-course-util-base":{},"moodle-course-util-section":{"requires":["node","moodle-course-util-base"]},"moodle-course-util-cm":{"requires":["node","moodle-course-util-base"]}}},"moodle-course-categoryexpander":{"requires":["node","event-key"]},"moodle-course-management":{"requires":["base","node","io-base","moodle-core-notification-exception","json-parse","dd-constrain","dd-proxy","dd-drop","dd-delegate","node-event-delegate"]},"moodle-form-passwordunmask":{"requires":[]},"moodle-form-dateselector":{"requires":["base","node","overlay","calendar"]},"moodle-form-shortforms":{"requires":["node","base","selector-css3","moodle-core-event"]},"moodle-question-chooser":{"requires":["moodle-core-chooserdialogue"]},"moodle-question-preview":{"requires":["base","dom","event-delegate","event-key","core_question_engine"]},"moodle-question-searchform":{"requires":["base","node"]},"moodle-availability_completion-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_date-form":{"requires":["base","node","event","io","moodle-core_availability-form"]},"moodle-availability_grade-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_group-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_grouping-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_profile-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-mod_assign-history":{"requires":["node","transition"]},"moodle-mod_attendance-groupfilter":{"requires":["base","node"]},"moodle-mod_quiz-dragdrop":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification","moodle-mod_quiz-quizbase","moodle-mod_quiz-util-base","moodle-mod_quiz-util-page","moodle-mod_quiz-util-slot","moodle-course-util"]},"moodle-mod_quiz-util":{"requires":["node","moodle-core-actionmenu"],"use":["moodle-mod_quiz-util-base"],"submodules":{"moodle-mod_quiz-util-base":{},"moodle-mod_quiz-util-slot":{"requires":["node","moodle-mod_quiz-util-base"]},"moodle-mod_quiz-util-page":{"requires":["node","moodle-mod_quiz-util-base"]}}},"moodle-mod_quiz-quizbase":{"requires":["base","node"]},"moodle-mod_quiz-modform":{"requires":["base","node","event"]},"moodle-mod_quiz-questionchooser":{"requires":["moodle-core-chooserdialogue","moodle-mod_quiz-util","querystring-parse"]},"moodle-mod_quiz-autosave":{"requires":["base","node","event","event-valuechange","node-event-delegate","io-form"]},"moodle-mod_quiz-toolboxes":{"requires":["base","node","event","event-key","io","moodle-mod_quiz-quizbase","moodle-mod_quiz-util-slot","moodle-core-notification-ajaxexception"]},"moodle-message_airnotifier-toolboxes":{"requires":["base","node","io"]},"moodle-filter_glossary-autolinker":{"requires":["base","node","io-base","json-parse","event-delegate","overlay","moodle-core-event","moodle-core-notification-alert","moodle-core-notification-exception","moodle-core-notification-ajaxexception"]},"moodle-filter_mathjaxloader-loader":{"requires":["moodle-core-event"]},"moodle-editor_atto-rangy":{"requires":[]},"moodle-editor_atto-editor":{"requires":["node","transition","io","overlay","escape","event","event-simulate","event-custom","node-event-html5","node-event-simulate","yui-throttle","moodle-core-notification-dialogue","moodle-core-notification-confirm","moodle-editor_atto-rangy","handlebars","timers","querystring-stringify"]},"moodle-editor_atto-plugin":{"requires":["node","base","escape","event","event-outside","handlebars","event-custom","timers","moodle-editor_atto-menu"]},"moodle-editor_atto-menu":{"requires":["moodle-core-notification-dialogue","node","event","event-custom"]},"moodle-report_eventlist-eventfilter":{"requires":["base","event","node","node-event-delegate","datatable","autocomplete","autocomplete-filters"]},"moodle-report_loglive-fetchlogs":{"requires":["base","event","node","io","node-event-delegate"]},"moodle-gradereport_history-userselector":{"requires":["escape","event-delegate","event-key","handlebars","io-base","json-parse","moodle-core-notification-dialogue"]},"moodle-qbank_editquestion-chooser":{"requires":["moodle-core-chooserdialogue"]},"moodle-tool_capability-search":{"requires":["base","node"]},"moodle-tool_lp-dragdrop-reorder":{"requires":["moodle-core-dragdrop"]},"moodle-tool_monitor-dropdown":{"requires":["base","event","node"]},"moodle-assignfeedback_editpdf-editor":{"requires":["base","event","node","io","graphics","json","event-move","event-resize","transition","querystring-stringify-simple","moodle-core-notification-dialog","moodle-core-notification-alert","moodle-core-notification-warning","moodle-core-notification-exception","moodle-core-notification-ajaxexception"]},"moodle-atto_accessibilitychecker-button":{"requires":["color-base","moodle-editor_atto-plugin"]},"moodle-atto_accessibilityhelper-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_align-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_bold-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_charmap-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_clear-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_collapse-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_emojipicker-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_emoticon-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_equation-button":{"requires":["moodle-editor_atto-plugin","moodle-core-event","io","event-valuechange","tabview","array-extras"]},"moodle-atto_h5p-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_html-button":{"requires":["promise","moodle-editor_atto-plugin","moodle-atto_html-beautify","moodle-atto_html-codemirror","event-valuechange"]},"moodle-atto_html-beautify":{},"moodle-atto_html-codemirror":{"requires":["moodle-atto_html-codemirror-skin"]},"moodle-atto_image-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_indent-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_italic-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_link-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_managefiles-usedfiles":{"requires":["node","escape"]},"moodle-atto_managefiles-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_media-button":{"requires":["moodle-editor_atto-plugin","moodle-form-shortforms"]},"moodle-atto_noautolink-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_orderedlist-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_recordrtc-button":{"requires":["moodle-editor_atto-plugin","moodle-atto_recordrtc-recording"]},"moodle-atto_recordrtc-recording":{"requires":["moodle-atto_recordrtc-button"]},"moodle-atto_rtl-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_strike-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_subscript-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_superscript-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_table-button":{"requires":["moodle-editor_atto-plugin","moodle-editor_atto-menu","event","event-valuechange"]},"moodle-atto_title-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_underline-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_undo-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_unorderedlist-button":{"requires":["moodle-editor_atto-plugin"]}}},"gallery":{"name":"gallery","base":"https:\/\/coursesnew.iitm.ac.in\/lib\/yuilib\/gallery\/","combine":true,"comboBase":"https:\/\/coursesnew.iitm.ac.in\/theme\/yui_combo.php?","ext":false,"root":"gallery\/1707983344\/","patterns":{"gallery-":{"group":"gallery"}}}},"modules":{"core_filepicker":{"name":"core_filepicker","fullpath":"https:\/\/coursesnew.iitm.ac.in\/lib\/javascript.php\/1707983344\/repository\/filepicker.js","requires":["base","node","node-event-simulate","json","async-queue","io-base","io-upload-iframe","io-form","yui2-treeview","panel","cookie","datatable","datatable-sort","resize-plugin","dd-plugin","escape","moodle-core_filepicker","moodle-core-notification-dialogue"]},"core_comment":{"name":"core_comment","fullpath":"https:\/\/coursesnew.iitm.ac.in\/lib\/javascript.php\/1707983344\/comment\/comment.js","requires":["base","io-base","node","json","yui2-animation","overlay","escape"]},"mathjax":{"name":"mathjax","fullpath":"https:\/\/cdn.jsdelivr.net\/npm\/mathjax@2.7.9\/MathJax.js?delayStartupUntil=configured"}}};
-M.yui.loader = {modules: {}};
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+float derivs_theta(float theta,float alpha,float g,float H);
+float euler(float theta,float h,float alpha,float H,float g);
+float heun(float theta,float h,float alpha,float H,float g);
+void rk45(float derivs_theta(float,float,float,float), float* t, float* theta, float h, float* epsilon,float alpha,float g,float H);
+float r2_euler(int nre,int nrrk,FILE* fp4,FILE* fp5,float St);
+float r2_heun(int nrh,int nrrk,FILE* fp7,FILE* fp8,float St);
+float St_calc(int nrrk,FILE* fp10,float mean);
+int main(int argc,char** argv){                          //main program
+	float a,b;
+	float theta_start=atof(argv[1]);
+	float theta_stop=atof(argv[2]);
+	float alpha=atof(argv[3]);
+	float delta_t=atof(argv[4]);
+        const float g=1.76e10;
+	float h=delta_t;
+	float t=0.0;
+	float theta_old1=theta_start;
+	float theta_old2=theta_start;
+	float theta=theta_start;
+	float dydx;
+	const float H=1e-10;
+	float theta_new1,theta_new2,e;
+	float r=1.0;
+	float sum=0.0;
+	float time=0.01;
+	FILE* euler_theta=fopen("euler_theta.txt","w");
+	FILE* heun_theta=fopen("heun_theta.txt","w");
+	FILE* rk45_theta=fopen("rk45_theta.txt","w");
+	fprintf(euler_theta,"%f %f\n",t,theta_old1);
+	fprintf(heun_theta,"%f %f\n",t,theta_old2);
+	fprintf(rk45_theta,"%f %f\n",t,theta);
+	int nre=1;                                        //no of rows in euler file
+	int nrh=1;                                        //no of rows in heun file
+	int nrrk=1;                                       //no of rows in rk45 file
+	while(theta_old1<=theta_stop){
+		theta_new1=euler(theta_old1,h,alpha,H,g);
+		t+=h;
+		fprintf(euler_theta,"%f %f\n",t,theta_new1);
+		nre++;
+		theta_old1=theta_new1;
+	}
+	t=0.0;
+	while(theta_old2<=theta_stop){
+		theta_new2=heun(theta_old2,h,alpha,H,g);
+		t+=h;
+		fprintf(heun_theta,"%f %f\n",t,theta_new2);
+		nrh++;
+		theta_old2=theta_new2;
+	}
+	t=0.0;
+	while(theta<=theta_stop){
+		sum+=theta;
+		rk45(derivs_theta,&t,&theta,time,&e,alpha,g,H);
+		fprintf(rk45_theta,"%f %f\n",t,theta);
+		nrrk++;
+		}
+	fclose(euler_theta);
+	fclose(heun_theta);
+	fclose(rk45_theta);
+	FILE* fp4=fopen("euler_theta.txt","r");
+	FILE* fp10=fopen("rk45_theta.txt","r");
+	float mean=(float)sum/nrrk;
+	float St=St_calc(nrrk,fp10,mean);
+	fclose(fp10);
+	FILE* fp5=fopen("rk45_theta.txt","r");
+	float R2_euler=r2_euler(nre,nrrk,fp4,fp5,St);
+	fclose(fp5);
+	FILE* fp7=fopen("heun_theta.txt","r");
+	FILE* fp8=fopen("rk45_theta.txt","r");
+	float R2_heun=r2_heun(nrh,nrrk,fp7,fp8,St);
+	printf("%f %f %f %f",alpha,delta_t,R2_euler,R2_heun);
+	fclose(fp4);
+	fclose(fp7);
+	fclose(fp8);
+}
+float derivs_theta(float theta,float alpha,float g,float H){                   //calculates the derivative of theta wrt t at a point
+	return ((float)g*alpha*sin(theta)*H/(pow(alpha,2)+1));
+}
+float euler(float theta,float h,float alpha,float H,float g){                 //finds y(i+1) from xi and yi using euler method
+	float dydx=derivs_theta(theta,alpha,g,H);
+	return(theta+dydx*h);
+}
+float heun(float theta,float h,float alpha,float H,float g){                   //finds y(i+1) from xi and yi using simple heun method without iteration
+	float dy1dx=derivs_theta(theta,alpha,g,H);
+	float thetae=theta+dy1dx*h;
+	float dy2dx=derivs_theta(thetae,alpha,g,H);
+	float slope=(dy1dx+dy2dx)*0.5;		
+	return(theta+slope*h);
+}
+void rk45(float derivs_theta(float,float,float,float), float* t, float* theta, float h, float* epsilon,float alpha,float g,float H)  //finds y(i+1) from xi and yi using rk45 method
+{
 
-//]]>
-</script>
+  float c20 = 0.25, c21 = 0.25;
+  float c30 = 0.375, c31 = 0.09375, c32 = 0.28125;
+  float c40,c41, c42,c43;
+  float c51, c52 = -8.0, c53, c54;
+  float c60 = 0.5, c61, c62 = 2, c63, c64;
+  float c65 = -0.275;
+  float a1, a2 = 0, a3, a4, a5 = -0.2;
+  float b1, b2 = 0, b3, b4, b5= -0.18, b6;
+  float F1, F2, F3, F4, F5, F6, theta4;
 
-<meta name="robots" content="noindex" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body  id="page-login-index" class="format-site  path-login dir-ltr lang-en yui-skin-sam yui3-skin-sam coursesnew-iitm-ac-in pagelayout-login course-1 context-1 notloggedin ">
-<div class="toast-wrapper mx-auto py-0 fixed-top" role="status" aria-live="polite"></div>
-
-<div id="page-wrapper">
-
-    <div>
-    <a class="sr-only sr-only-focusable" href="#maincontent">Skip to main content</a>
-</div><script src="https://coursesnew.iitm.ac.in/lib/javascript.php/1707983344/lib/polyfills/polyfill.js"></script>
-<script src="https://coursesnew.iitm.ac.in/theme/yui_combo.php?rollup/3.17.2/yui-moodlesimple-min.js"></script><script src="https://coursesnew.iitm.ac.in/lib/javascript.php/1707983344/lib/javascript-static.js"></script>
-<script>
-//<![CDATA[
-document.body.className += ' jsenabled';
-//]]>
-</script>
-
+  c40 = (float) 12/ (float) 13;
+  c41 = (float) 1932/(float) 2197;
+  c42 = (float) -7200/(float) 2197;
+  c43 = (float) 7296/(float) 2197;
+  c51 = c53 = (float) 439/ (float) 216;
+  c54 = (float) -845/(float) 4104;
+  c61 = (float) -8/(float) 27;
+  c63 = (float) -3544/(float) 2565;
+  c64 = (float) 1859/(float) 4104;
+  a1 = (float) 25/(float) 216;
+  a3 = (float) 1408/(float) 2565;
+  a4 = (float) 2197/(float) 4104;
+  b1 = (float) 16/(float) 135;
+  b3 = (float) 6656/(float) 12825;
+  b4 = (float) 28561/(float) 56430;
+  b6 = (float) 2/(float) 55;
 
 
-    <div id="page" class="container-fluid pt-5 mt-0">
-        <div id="page-content" class="row">
-            <div id="region-main-box" class="col-12">
-                <section id="region-main" class="col-12 h-100" aria-label="Content">
-                <div class="login-wrapper">
-                    <div class="login-container">
-                    <div role="main"><span id="maincontent"></span><div class="loginform">
-        <div id="loginlogo" class="login-logo">
-            <img id="logoimage" src="https://coursesnew.iitm.ac.in/pluginfile.php/1/core_admin/logo/0x200/1707983344/logo.png" class="img-fluid" alt="IIT Courses"/>
-            <h1 class="login-heading sr-only">Log in to IIT Courses</h1>
-        </div>
-    <form class="login-form" action="https://coursesnew.iitm.ac.in/login/index.php" method="post" id="login">
-        <input type="hidden" name="logintoken" value="lioJsD6hq1CuU7ltsLWCIu1eEBr4FVp7">
-        <div class="login-form-username form-group">
-            <label for="username" class="sr-only">
-                    Username
-            </label>
-            <input type="text" name="username" id="username" class="form-control form-control-lg" value="" placeholder="Username" autocomplete="username">
-        </div>
-        <div class="login-form-password form-group">
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" name="password" id="password" value="" class="form-control form-control-lg" placeholder="Password" autocomplete="current-password">
-        </div>
-        <div class="login-form-submit form-group">
-            <button class="btn btn-primary btn-lg" type="submit" id="loginbtn">Log in</button>
-        </div>
-        <div class="login-form-forgotpassword form-group">
-            <a href="https://coursesnew.iitm.ac.in/login/forgot_password.php">Lost password?</a>
-        </div>
-    </form>
-        <div class="login-divider"></div>
-        <h2 class="login-heading">Some courses may allow guest access</h2>
-        <form action="https://coursesnew.iitm.ac.in/login/index.php" method="post" id="guestlogin">
-            <input type="hidden" name="logintoken" value="lioJsD6hq1CuU7ltsLWCIu1eEBr4FVp7">
-            <input type="hidden" name="username" value="guest" />
-            <input type="hidden" name="password" value="guest" />
-            <button class="btn btn-secondary" type="submit">Log in as a guest</button>
-        </form>
-    <div class="login-divider"></div>
-    <div class="d-flex">
-        <button type="button" class="btn btn-secondary"  data-modal="alert" data-modal-title-str='["cookiesenabled", "core"]'  data-modal-content-str='["cookiesenabled_help_html", "core"]'>Cookies notice</button>
-    </div>
-</div></div>
-                    </div>
-                </div>
-                </section>
-            </div>
-        </div>
-    </div>
-    
-    <footer id="page-footer" class="footer-popover bg-white">
-        <div data-region="footer-container-popover">
-            <button class="btn btn-icon bg-secondary icon-no-margin btn-footer-popover" data-action="footer-popover" aria-label="Show footer">
-                <i class="icon fa fa-question fa-fw " aria-hidden="true"  ></i>
-            </button>
-        </div>
-        <div class="footer-content-popover container" data-region="footer-content-popover">
-                <div class="footer-section p-3 border-bottom">
-    
-    
-                        <div><a href="https://coursesnew.iitm.ac.in/user/contactsitesupport.php"><i class="icon fa fa-envelope-o fa-fw iconhelp icon-pre" aria-hidden="true"  ></i>Contact site support</a></div>
-                </div>
-            <div class="footer-section p-3 border-bottom">
-                <div class="logininfo">
-                    <div class="logininfo">You are not logged in.</div>
-                </div>
-                <div class="tool_usertours-resettourcontainer">
-                </div>
-    
-                <div class="tool_dataprivacy"><a href="https://coursesnew.iitm.ac.in/admin/tool/dataprivacy/summary.php">Data retention summary</a></div><a href="https://download.moodle.org/mobile?version=2022041900.01&amp;lang=en&amp;iosappid=633359593&amp;androidappid=com.moodle.moodlemobile">Get the mobile app</a>
-                <script>
-//<![CDATA[
-var require = {
-    baseUrl : 'https://coursesnew.iitm.ac.in/lib/requirejs.php/1707983344/',
-    // We only support AMD modules with an explicit define() statement.
-    enforceDefine: true,
-    skipDataMain: true,
-    waitSeconds : 0,
+  F1 = h * derivs_theta(*theta,alpha,g,H);
+  F2 = h * derivs_theta(*theta + c21 * F1,alpha,g,H);
+  F3 = h * derivs_theta(*theta + c31 * F1 + c32 * F2,alpha,g,H);
+  F4 = h * derivs_theta(*theta + c41 * F1 + c42 * F2 + c43 * F3,alpha,g,H);
+  F5 = h * derivs_theta(*theta + c51 * F1 + c52 * F2 + c53 * F3 + c54 * F4,alpha,g,H );
+  F6 = h * derivs_theta(*theta + c61 * F1 + c62 * F2 + c63 * F3 + c64 * F4 + c65 * F5,alpha,g,H);
 
-    paths: {
-        jquery: 'https://coursesnew.iitm.ac.in/lib/javascript.php/1707983344/lib/jquery/jquery-3.6.0.min',
-        jqueryui: 'https://coursesnew.iitm.ac.in/lib/javascript.php/1707983344/lib/jquery/ui-1.13.0/jquery-ui.min',
-        jqueryprivate: 'https://coursesnew.iitm.ac.in/lib/javascript.php/1707983344/lib/requirejs/jquery-private'
-    },
-
-    // Custom jquery config map.
-    map: {
-      // '*' means all modules will get 'jqueryprivate'
-      // for their 'jquery' dependency.
-      '*': { jquery: 'jqueryprivate' },
-      // Stub module for 'process'. This is a workaround for a bug in MathJax (see MDL-60458).
-      '*': { process: 'core/first' },
-
-      // 'jquery-private' wants the real jQuery module
-      // though. If this line was not here, there would
-      // be an unresolvable cyclic dependency.
-      jqueryprivate: { jquery: 'jquery' }
-    }
-};
-
-//]]>
-</script>
-<script src="https://coursesnew.iitm.ac.in/lib/javascript.php/1707983344/lib/requirejs/require.min.js"></script>
-<script>
-//<![CDATA[
-M.util.js_pending("core/first");
-require(['core/first'], function() {
-require(['core/prefetch'])
-;
-require(["media_videojs/loader"], function(loader) {
-    loader.setUp('en');
-});;
-
-require(['theme_boost/footer-popover'], function(FooterPopover) {
-    FooterPopover.init();
-});
-;
-
-M.util.js_pending('theme_boost/loader');
-require(['theme_boost/loader'], function() {
-  M.util.js_complete('theme_boost/loader');
-});
-;
-
-;
-M.util.js_pending('core/notification'); require(['core/notification'], function(amd) {amd.init(1, []); M.util.js_complete('core/notification');});;
-M.util.js_pending('core/log'); require(['core/log'], function(amd) {amd.setConfig({"level":"warn"}); M.util.js_complete('core/log');});;
-M.util.js_pending('core/page_global'); require(['core/page_global'], function(amd) {amd.init(); M.util.js_complete('core/page_global');});;
-M.util.js_pending('core/utility'); require(['core/utility'], function(amd) {M.util.js_complete('core/utility');});
-    M.util.js_complete("core/first");
-});
-//]]>
-</script>
-<script>
-//<![CDATA[
-M.str = {"moodle":{"lastmodified":"Last modified","name":"Name","error":"Error","info":"Information","yes":"Yes","no":"No","cancel":"Cancel","confirm":"Confirm","areyousure":"Are you sure?","closebuttontitle":"Close","unknownerror":"Unknown error","file":"File","url":"URL","collapseall":"Collapse all","expandall":"Expand all"},"repository":{"type":"Type","size":"Size","invalidjson":"Invalid JSON string","nofilesattached":"No files attached","filepicker":"File picker","logout":"Logout","nofilesavailable":"No files available","norepositoriesavailable":"Sorry, none of your current repositories can return files in the required format.","fileexistsdialogheader":"File exists","fileexistsdialog_editor":"A file with that name has already been attached to the text you are editing.","fileexistsdialog_filemanager":"A file with that name has already been attached","renameto":"Rename to \"{$a}\"","referencesexist":"There are {$a} links to this file","select":"Select"},"admin":{"confirmdeletecomments":"You are about to delete comments, are you sure?","confirmation":"Confirmation"},"debug":{"debuginfo":"Debug info","line":"Line","stacktrace":"Stack trace"},"langconfig":{"labelsep":": "}};
-//]]>
-</script>
-<script>
-//<![CDATA[
-(function() {Y.use("moodle-filter_mathjaxloader-loader",function() {M.filter_mathjaxloader.configure({"mathjaxconfig":"\nMathJax.Hub.Config({\n    config: [\"Accessible.js\", \"Safe.js\"],\n    errorSettings: { message: [\"!\"] },\n    skipStartupTypeset: true,\n    messageStyle: \"none\"\n});\n","lang":"en"});
-});
-M.util.help_popups.setup(Y);
- M.util.js_pending('random65d7290b9f63e2'); Y.on('domready', function() { M.util.js_complete("init");  M.util.js_complete('random65d7290b9f63e2'); });
-})();
-//]]>
-</script>
-
-            </div>
-            <div class="footer-section p-3">
-                <div>Powered by <a href="https://moodle.com">Moodle</a></div>
-            </div>
-        </div>
-    
-        <div class="footer-content-debugging footer-dark bg-dark text-light">
-            <div class="container-fluid footer-dark-inner">
-                
-            </div>
-        </div>
-    </footer>
-</div>
-
-</body>
-</html>
+  theta4 = *theta + a1 * F1 + a3 * F3 + a4 * F4 + a5 * F5;
+  *theta += b1 * F1 + b3 * F3 + b4 * F4 + b5 * F5 + b6 * F6;
+  *t += h;
+  *epsilon = *theta - theta4;                                                     //the error between fourth order and fifth order rk estimates is added to fifth order estimate to increase accuracy
+  *theta+=*epsilon;
+}
+float r2_euler(int nre,int nrrk,FILE* fp4,FILE* fp5,float St){                    //calculates the goodness of fit for euler taking rk45 as standard
+	int i,j,k;
+	float a,b,c,d;
+	float e=0.0;
+	float f=0.0;
+	float Sr_euler;
+	for(i=0;i<nre;i++){
+		fscanf(fp4,"%f %f",&c,&d);
+		if((int)c*100<nrrk){
+			if(c<10){
+				k=(int)(c*100);
+				fseek(fp5,18*k,SEEK_SET);
+				fscanf(fp5,"%f %f",&a,&b);
+				f+=pow((b-d),2);
+				}
+			else if(c>=10 && c<100){
+				fseek(fp5,1000*18,SEEK_SET);
+				k=(int)(c*100)-1000;
+				fseek(fp5,k*19,SEEK_CUR);
+				fscanf(fp5,"%f %f",&a,&b);
+				f+=pow((b-d),2);
+				}
+			else {
+				fseek(fp5,0,SEEK_SET);
+				for(j=1;j<=c*100;j++){
+					fscanf(fp5,"%f %f",&a,&b);
+					}
+				f+=pow((b-d),2);
+				}	
+			}
+		else{
+			break;
+			}
+		}		
+	Sr_euler=(float)f/nre;
+	float R2_euler=1-Sr_euler/St;
+	fseek(fp5,0,SEEK_SET);
+	return(R2_euler);	
+}
+float r2_heun(int nrh,int nrrk,FILE* fp7,FILE* fp8,float St){            //calculates the goodness of fit for heun taking rk45 as standard
+	int i,j,k;
+	float a,b,c,d;
+	float e=0.0;
+	float f=0.0;
+	float Sr_heun;
+	for(i=0;i<nrh;i++){
+		fscanf(fp7,"%f %f",&c,&d);
+		if((int)c*100<nrrk){
+			if(c<10){
+				k=(int)(c*100);
+				fseek(fp8,18*k,SEEK_SET);
+				fscanf(fp8,"%f %f",&a,&b);
+				f+=pow((b-d),2);
+				}
+			else if(c>=10 && c<100){
+				fseek(fp8,1000*18,SEEK_SET);
+				k=(int)(c*100)-1000;
+				fseek(fp8,k*19,SEEK_CUR);
+				fscanf(fp8,"%f %f",&a,&b);
+				f+=pow((b-d),2);
+				}
+			else{
+				fseek(fp8,0,SEEK_SET);
+				for(j=1;j<=c*100;j++){
+					fscanf(fp8,"%f %f",&a,&b);
+					}
+				f+=pow((b-d),2);
+				}
+			}
+		else{
+			break;
+			}
+		}		
+	Sr_heun=(float)f/nrh;
+	float R2_heun=1-Sr_heun/St;
+	fseek(fp8,0,SEEK_SET);
+	return(R2_heun);
+}
+float St_calc(int nrrk,FILE* fp10,float mean){                        //calculates the St values using the values derived from rk45 method
+	int i;
+	float a,b;
+	float e=0.0;
+	for(i=0;i<nrrk;i++){
+		fscanf(fp10,"%f %f",&a,&b);
+		e+=pow((b-mean),2);
+	    }
+	float St=(float)e/nrrk;
+	return(St);
+}	
